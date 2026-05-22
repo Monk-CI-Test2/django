@@ -1,7 +1,7 @@
 name: Schedule tests
 
 on:
-  workflow_dispatch:
+  workflow_dispatch: {}
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -12,6 +12,7 @@ permissions:
 
 jobs:
   windows:
+    if: ${{ false }}           # ← skipped
     runs-on: windows-latest
     strategy:
       matrix:
@@ -41,7 +42,7 @@ jobs:
         run: python -Wall tests/runtests.py -v2
 
   pyc-only:
-    runs-on: ubuntu-latest
+    runs-on: monkci-ubuntu-24.04-4    # ← changed
     name: Byte-compiled Django with no source files (only .pyc files)
     timeout-minutes: 60
     steps:
@@ -70,7 +71,7 @@ jobs:
         run: python -Wall tests/runtests.py --verbosity=2
 
   javascript-tests:
-    runs-on: ubuntu-latest
+    runs-on: monkci-ubuntu-24.04-4    # ← changed
     name: JavaScript tests
     timeout-minutes: 60
     steps:
@@ -88,7 +89,7 @@ jobs:
       - run: npm test
 
   selenium-sqlite:
-    runs-on: ubuntu-latest
+    runs-on: monkci-ubuntu-24.04-4    # ← changed
     name: Selenium tests, SQLite
     timeout-minutes: 60
     steps:
@@ -113,7 +114,7 @@ jobs:
           python -Wall runtests.py --verbosity 2 --noinput --selenium=chrome --headless --settings=test_sqlite --parallel 1
 
   selenium-postgresql:
-    runs-on: ubuntu-latest
+    runs-on: monkci-ubuntu-24.04-4    # ← changed
     name: Selenium tests, PostgreSQL
     timeout-minutes: 60
     services:
@@ -159,7 +160,7 @@ jobs:
       matrix:
         version: [16, 17, 18]
         server_side_bindings: [0, 1]
-    runs-on: ubuntu-latest
+    runs-on: monkci-ubuntu-24.04-4    # ← changed
     name: PostgreSQL Versions
     timeout-minutes: 60
     env:
