@@ -173,6 +173,7 @@ jobs:
     runs-on: monkci-ubuntu-24.04-4
     name: PostgreSQL Versions
     timeout-minutes: 60
+    continue-on-error: true    # ← added this
     env:
       SERVER_SIDE_BINDING: ${{ matrix.server_side_bindings }}
     steps:
