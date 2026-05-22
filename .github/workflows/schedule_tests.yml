@@ -12,7 +12,7 @@ permissions:
 
 jobs:
   windows:
-    if: ${{ false }}           # ← skipped
+    if: ${{ false }}
     runs-on: windows-latest
     strategy:
       matrix:
@@ -42,7 +42,7 @@ jobs:
         run: python -Wall tests/runtests.py -v2
 
   pyc-only:
-    runs-on: monkci-ubuntu-24.04-4    # ← changed
+    runs-on: monkci-ubuntu-24.04-4
     name: Byte-compiled Django with no source files (only .pyc files)
     timeout-minutes: 60
     steps:
@@ -56,7 +56,9 @@ jobs:
           python-version: '3.14'
           cache: 'pip'
       - name: Install libmemcached-dev for pylibmc
-        run: sudo apt-get install libmemcached-dev
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libmemcached-dev
       - name: Install and upgrade packaging tools
         run: python -m pip install --upgrade pip wheel
       - run: python -m pip install .
@@ -71,7 +73,7 @@ jobs:
         run: python -Wall tests/runtests.py --verbosity=2
 
   javascript-tests:
-    runs-on: monkci-ubuntu-24.04-4    # ← changed
+    runs-on: monkci-ubuntu-24.04-4
     name: JavaScript tests
     timeout-minutes: 60
     steps:
@@ -89,7 +91,7 @@ jobs:
       - run: npm test
 
   selenium-sqlite:
-    runs-on: monkci-ubuntu-24.04-4    # ← changed
+    runs-on: monkci-ubuntu-24.04-4
     name: Selenium tests, SQLite
     timeout-minutes: 60
     steps:
@@ -103,8 +105,10 @@ jobs:
           python-version: '3.14'
           cache: 'pip'
           cache-dependency-path: 'tests/requirements/py3.txt'
-      - name: Install libmemcached-dev for pylibmc
-        run: sudo apt-get install libmemcached-dev
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libmemcached-dev google-chrome-stable
       - name: Install and upgrade packaging tools
         run: python -m pip install --upgrade pip wheel
       - run: python -m pip install -r tests/requirements/py3.txt -e .
@@ -114,7 +118,7 @@ jobs:
           python -Wall runtests.py --verbosity 2 --noinput --selenium=chrome --headless --settings=test_sqlite --parallel 1
 
   selenium-postgresql:
-    runs-on: monkci-ubuntu-24.04-4    # ← changed
+    runs-on: monkci-ubuntu-24.04-4
     name: Selenium tests, PostgreSQL
     timeout-minutes: 60
     services:
@@ -142,8 +146,10 @@ jobs:
           python-version: '3.14'
           cache: 'pip'
           cache-dependency-path: 'tests/requirements/py3.txt'
-      - name: Install libmemcached-dev for pylibmc
-        run: sudo apt-get install libmemcached-dev
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libmemcached-dev google-chrome-stable
       - name: Install and upgrade packaging tools
         run: python -m pip install --upgrade pip wheel
       - run: python -m pip install -r tests/requirements/py3.txt -r tests/requirements/postgres.txt -e .
@@ -160,7 +166,7 @@ jobs:
       matrix:
         version: [16, 17, 18]
         server_side_bindings: [0, 1]
-    runs-on: monkci-ubuntu-24.04-4    # ← changed
+    runs-on: monkci-ubuntu-24.04-4
     name: PostgreSQL Versions
     timeout-minutes: 60
     env:
@@ -191,7 +197,9 @@ jobs:
           cache: 'pip'
           cache-dependency-path: 'tests/requirements/py3.txt'
       - name: Install libmemcached-dev for pylibmc
-        run: sudo apt-get install libmemcached-dev
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libmemcached-dev
       - name: Install and upgrade packaging tools
         run: python -m pip install --upgrade pip wheel
       - run: python -m pip install -r tests/requirements/py3.txt -r tests/requirements/postgres.txt -e .
