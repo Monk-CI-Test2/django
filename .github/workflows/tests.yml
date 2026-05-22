@@ -44,7 +44,7 @@ jobs:
         run: python -Wall tests/runtests.py -v2
 
   javascript-tests:
-    runs-on: ubuntu-latest
+    runs-on: monkci-ubuntu-24.04-4
     name: JavaScript tests
     timeout-minutes: 60
     steps:
@@ -62,7 +62,7 @@ jobs:
       - run: npm test
 
   scripts-tests:
-    runs-on: ubuntu-latest
+    runs-on: monkci-ubuntu-24.04-4
     name: Scripts tests
     timeout-minutes: 60
     steps:
